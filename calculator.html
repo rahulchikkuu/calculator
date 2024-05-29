@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calculator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background: url('https://img.freepik.com/free-photo/stapler-crumbled-paper-copy-space_23-2148475381.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .calculator-button {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            margin: 1px;
+        }
+        .result {
+            font-size: 24px;
+            height: 60px;
+            text-align: right;
+            padding-right: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        let currentInput = "";
+        let operator = "";
+        let firstNumber = null;
+        
+        function add(num1, num2) {
+            return num1 + num2;
+        }
+        function sub(num1, num2) {
+            return num1 - num2;
+        }
+        function multi(num1, num2) {
+            return num1 * num2;
+        }
+        function divi(num1, num2) {
+            return num1 / num2;
+        }
+        
+        function inputNumber(num) {
+            currentInput += num;
+            document.getElementById("ans").value = currentInput;
+        }
+        
+        function inputOperator(op) {
+            if (currentInput !== "") {
+                if (firstNumber === null) {
+                    firstNumber = parseFloat(currentInput);
+                } else if (operator) {
+                    firstNumber = calculate(firstNumber, parseFloat(currentInput), operator);
+                }
+                operator = op;
+                currentInput = "";
+                document.getElementById("ans").value = operator;
+            }
+        }
+        
+        function calculate(num1, num2, op) {
+            switch (op) {
+                case '+': return add(num1, num2);
+                case '-': return sub(num1, num2);
+                case '*': return multi(num1, num2);
+                case '/': return divi(num1, num2);
+                default: return "Invalid input";
+            }
+        }
+        
+        function computeResult() {
+            if (currentInput !== "" && operator && firstNumber !== null) {
+                const secondNumber = parseFloat(currentInput);
+                const result = calculate(firstNumber, secondNumber, operator);
+                document.getElementById("ans").value = result;
+                firstNumber = null;
+                operator = "";
+                currentInput = "";
+            }
+        }
+        
+        function clearInput() {
+            currentInput = "";
+            operator = "";
+            firstNumber = null;
+            document.getElementById("ans").value = "";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="tophead"><h1>Calculator</h1></div>
+        <input type="text" class="form-control result" id="ans" disabled />
+        <div class="d-flex flex-wrap justify-content-center">
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('1')">1</button>
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('2')">2</button>
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('3')">3</button>
+            <button class="btn btn-warning calculator-button" onclick="inputOperator('+')">+</button>
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('4')">4</button>
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('5')">5</button>
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('6')">6</button>
+            <button class="btn btn-warning calculator-button" onclick="inputOperator('-')">-</button>
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('7')">7</button>
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('8')">8</button>
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('9')">9</button>
+            <button class="btn btn-warning calculator-button" onclick="inputOperator('*')">*</button>
+            <button class="btn btn-danger calculator-button" onclick="clearInput()">C</button>
+            <button class="btn btn-secondary calculator-button" onclick="inputNumber('0')">0</button>
+            <button class="btn btn-warning calculator-button" onclick="inputOperator('/')">/</button>
+            <button class="btn btn-success calculator-button" onclick="computeResult()">=</button>
+        </div>
+    </div>
+</body>
+</html>
